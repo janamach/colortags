@@ -89,17 +89,15 @@ def open_main_window(button_text):
 
     for column, element in enumerate(elements):
         text = tk.Text(root, width=4, font=("Helvetica", 22), bg=color_map[element])
-        text.bind('<Button-1>', lambda event: on_select(event, f'{button_text}.csv', selected_combinations))
-
+        text.bind('<Button-1>', lambda event, output_file=f'{button_text}.csv', selected_combinations=selected_combinations: on_select(event, output_file, selected_combinations))
+    
         for combination in parts[element]:
             text.insert('insert', combination + '\n')
             if combination in selected_combinations:
-                # Make the current line unclickable
-                text.unbind('<Button-1>')
                 text.tag_add('selected', 'end - 2 lines', 'end - 1 line')
                 # Change the background color of the current line to selected_ant_color
                 text.tag_config('selected', background="white")
-
+    
         text.grid(column=column, row=0)
 
     root.mainloop()
