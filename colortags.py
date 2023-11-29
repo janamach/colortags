@@ -3,6 +3,17 @@ from tkinter import messagebox
 import itertools
 from datetime import datetime
 from tkinter import simpledialog
+from tkinter import font
+
+def change_fontsize(root, scale):
+    default_font = font.nametofont("TkDefaultFont")
+    default_font.configure(size=int(default_font['size'] * scale))
+
+    text_font = font.nametofont("TkTextFont")
+    text_font.configure(size=int(text_font['size'] * scale))
+
+    fixed_font = font.nametofont("TkFixedFont")
+    fixed_font.configure(size=int(fixed_font['size'] * scale))
 
 class CustomDialog(simpledialog.Dialog):
     def body(self, master):
@@ -51,10 +62,10 @@ def on_select(event, output_file, selected_combinations):
         selected_combinations.append(combination)
 
 def open_main_window(button_text):
-    global root
+    #global root
     root = tk.Tk()
-
-    elements = ['O', 'B', 'G', 'V', 'Y']
+    root.title(button_text)
+    elements = ['R', 'O', 'B', 'G', 'V', 'Y']
     #combinations = [''.join(combination) for combination in itertools.permutations(elements, 3)]
     # Combinations include all options with 1-5 elements. Elements can repeat.
     # It can also include one, two, three, or four elements.
@@ -74,7 +85,7 @@ def open_main_window(button_text):
         root.quit()
     #quit()
 
-    color_map = {'O': 'orange', 'B': 'cyan', 'G': 'limegreen', 'V': 'violet', 'Y': 'yellow'}
+    color_map = {'R': 'Red', 'O': 'orange', 'B': 'cyan', 'G': 'limegreen', 'V': 'violet', 'Y': 'yellow'}
 
     # Split the combinations based on the first character
     parts = {element: [combination for combination in combinations if combination.startswith(element)] for element in elements}
@@ -90,7 +101,6 @@ def open_main_window(button_text):
     for column, element in enumerate(elements):
         text = tk.Text(root, width=4, font=("Helvetica", 22), bg=color_map[element])
         text.bind('<Button-1>', lambda event, output_file=f'{button_text}.csv', selected_combinations=selected_combinations: on_select(event, output_file, selected_combinations))
-    
         for combination in parts[element]:
             text.insert('insert', combination + '\n')
             if combination in selected_combinations:
@@ -106,10 +116,8 @@ def open_main_window(button_text):
 def on_button_click(button_text):
     open_main_window(button_text)
 
-    # Your existing code here...
-    root.quit()
-
 root = tk.Tk()
+change_fontsize(root, 5)  # Increase font size by 50%
 
 # Add three buttons at the start
 button1 = tk.Button(root, text="Cr", command=lambda: on_button_click("Cr"))
@@ -118,7 +126,11 @@ button1.pack()
 button2 = tk.Button(root, text="Ci17", command=lambda: on_button_click("Ci17"))
 button2.pack()
 
-button3 = tk.Button(root, text="Cancel", command=root.quit)
+button3 = tk.Button(root, text="CiX", command=lambda: on_button_click("CiX"))
 button3.pack()
+
+# Button three is a quit command
+button_quit = tk.Button(root, text="Quit", command=root.quit)
+button_quit.pack()
 
 root.mainloop()
