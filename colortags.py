@@ -5,6 +5,8 @@ from datetime import datetime
 from tkinter import simpledialog
 from tkinter import font
 
+colonies = ['Cr', 'Ci17','___', 'Ci15']
+
 def change_fontsize(root, scale):
     default_font = font.nametofont("TkDefaultFont")
     default_font.configure(size=int(default_font['size'] * scale))
@@ -120,14 +122,9 @@ root = tk.Tk()
 change_fontsize(root, 5)  # Increase font size by 50%
 
 # Add three buttons at the start
-button1 = tk.Button(root, text="Cr", command=lambda: on_button_click("Cr"))
-button1.pack()
-
-button2 = tk.Button(root, text="Ci17", command=lambda: on_button_click("Ci17"))
-button2.pack()
-
-button3 = tk.Button(root, text="CiX", command=lambda: on_button_click("CiX"))
-button3.pack()
+for colony in colonies:
+    button = tk.Button(root, text=colony, command=lambda colony=colony: on_button_click(colony))
+    button.pack()
 
 # Button three is a quit command
 button_quit = tk.Button(root, text="Quit", command=root.quit)
